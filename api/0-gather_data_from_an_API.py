@@ -9,38 +9,28 @@ import requests
 import sys
 
 
-def get_employee_progress(employee_id):
+def get_employee_progress(employee_ID):
     """
     For a given employee ID, returns information about
     their TODO list progress
     """
-    # API endpoint URLs
-    url_base = f"https://jsonplaceholder.typicode.com/"
-    url_employee = url_base + f"users/{employee_id}"
-    url_todos = url_base + f"todos?userId={employee_id}"
+    url = 'https://jsonplaceholder.typicode.com'
+    employee_url = f"{url}/users/{employee_ID}"
+    todos_url = f"{url}/todos?userId={employee_ID}"
 
-    # Send GET request to the API for employee name
-    employee_response = requests.get(url_employee)
+    employee_response = requests.get(employee_url)
     employee_data = employee_response.json()
 
-    if employee_response.status_code != 200:
-        print(f"Error: Unable to fetch data for employee ID {employee_id}")
-        sys.exit(1)
+    if employee_response.status_code == 200:
+        employee_name = employee_data.get('name')
 
-    employee_name = employee_data.get('name')
-
-    # Send GET request to the API for employee tasks
-    todos_response = requests.get(url_todos)
+    todos_response = requests.get(todos_url)
     todos_data = todos_response.json()
 
-    if todos_response.status_code != 200:
-        print(f"Error: Unable to fetch data for employee ID {employee_id}")
-        sys.exit(1)
-
-    total_tasks = len(todos_data)
-    completed_tasks = 0
+    if todos_response.status_code == 200:
+        total_tasks = len(todos_data)
+        completed_tasks = 0
     for task in todos_data:
-        # Counting booleans
         completed_tasks += task['completed']
 
     print("Employee {} is done with tasks({}/{}):"
