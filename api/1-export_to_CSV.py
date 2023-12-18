@@ -22,12 +22,12 @@ def get_employee_progress_csv(employee_ID):
     employee_data = employee_response.json()
 
     if employee_response.status_code == 200:
-        employee_name = employee_data.get('name')
+        employee_name = employee_data.get("username")
 
     todos_response = requests.get(todos_url)
     todos_data = todos_response.json()
 
-    csv_filename = f"{employee_ID}.csv"
+    csv_filename = "{}.csv".format(employee_id)
     with open(csv_filename, mode="w", newline="") as csv_file:
         csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
 
