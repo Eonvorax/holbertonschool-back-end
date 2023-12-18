@@ -1,18 +1,23 @@
 #!/usr/bin/python3
-
-"""
-Gather data from an API for a given employee
-ID and display TODO list progress.
-"""
-
+"""Gather data from an API for a given employee
+ID and display TODO list progress."""
 import requests
 import sys
 
 
-def get_employee_progress(employee_ID):
+def to_do(employee_ID):
     """
-    For a given employee ID, returns information about
-    their TODO list progress
+    Retrieve employee information and TODO
+    list progress based on the employee ID.
+
+    Args:
+        employee_ID (int): The ID of the employee.
+
+    Returns:
+        None
+
+    Prints:
+        Displays the employee's TODO list progress.
     """
     url = 'https://jsonplaceholder.typicode.com'
     employee_url = f"{url}/users/{employee_ID}"
@@ -42,11 +47,9 @@ def get_employee_progress(employee_ID):
 
 
 if __name__ == "__main__":
-    # Checking correct usage
     if len(sys.argv) != 2:
-        print("Usage: python3 0-gather_data_from_an_API.py <id>")
+        print("error")
         sys.exit(1)
 
-    # Converting string ID to integer
     employee_id = int(sys.argv[1])
-    get_employee_progress(employee_id)
+    to_do(employee_id)
