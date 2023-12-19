@@ -4,7 +4,6 @@ ID and store TODO list progress in a JSON file"""
 
 import json
 import requests
-import sys
 
 
 def get_progress_json(filename):
@@ -21,38 +20,25 @@ def get_progress_json(filename):
     employee_response = requests.get(employee_url)
     employee_data = employee_response.json()
 
-    employee_list = []
-    for employee in employee_data:
-        employee_list.append({
-        "id" : employee.get("id"),
-        "username" : employee.get("username")
-        })
-
-    print(employee_list)
-
     todos_response = requests.get(todos_url)
     todos_data = todos_response.json()
 
-    # TODO replace the following by a for loop going through employee_list
-    return
-    # Create base dictionary and list to contain tasks
-    tasks_dict = {}
-    tasks_list = []
-
-    # Fill list with dictionaries in requested format for JSON
-    for task in todos_data:
-        tasks_list.append({
-                "task": task.get("title"),
-                "completed": task.get("completed"),
-                "username": employee_username
-            })
-
-    # Add list to the dictionary
-    tasks_dict[str(employee_ID)] = tasks_list
+    employees_progress = {}
+    for employee in employee_data:
+        emp_id = employee.get("id")
+        username = employee.get("username")
+        employees_progress[str(emp_id)] = []
+        for task in todos_data:
+            if task.get("userId") == id:
+                employees_progress[str(emp_id)].append({
+                    "username": username,
+                    "task": task.get("title"),
+                    "completed": task.get("completed")
+                })
 
     # Generate filename and dump dictionary into JSON file
     with open(filename, mode="w") as json_file:
-        json.dump(tasks_dict, json_file)
+        json.dump(employees_progress, json_file)
 
 
 if __name__ == "__main__":
