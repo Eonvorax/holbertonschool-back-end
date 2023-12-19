@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""Gather data from an API for a given employee
-ID and store TODO list progress in a JSON file"""
+"""Gather data on employee progress for their respective tasks."""
 
 import json
 import requests
@@ -8,10 +7,10 @@ import requests
 
 def get_progress_json(filename):
     """
-    Retrieve employee information and TODO list progress based on the
-    employee ID.
-    The data will be save to a file named in format:
-        <employee_ID>.json
+    Retrieve employee progress on their tasks, based on their user ID.
+
+    The data will be saved to a file named in the format:
+        <filename>.json
     """
     url = 'https://jsonplaceholder.typicode.com'
     employee_url = f"{url}/users"
@@ -24,19 +23,24 @@ def get_progress_json(filename):
     todos_data = todos_response.json()
 
     employees_progress = {}
+
     for employee in employee_data:
         emp_id = employee.get("id")
         username = employee.get("username")
+        # Creating task list for this employee
         employees_progress[str(emp_id)] = []
+
+        # Going through all tasks looking for user ID match
         for task in todos_data:
             if task.get("userId") == emp_id:
+                # Found task for this employee, adding it to their task list
                 employees_progress[str(emp_id)].append({
                     "username": username,
                     "task": task.get("title"),
                     "completed": task.get("completed")
                 })
 
-    # Generate filename and dump dictionary into JSON file
+    # Dump dictionary into JSON file with given filename
     with open(filename, mode="w") as json_file:
         json.dump(employees_progress, json_file)
 
