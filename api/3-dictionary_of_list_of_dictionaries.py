@@ -29,7 +29,7 @@ def get_progress_json(filename):
         username = employee.get("username")
         employees_progress[str(emp_id)] = []
         for task in todos_data:
-            if task.get("userId") == id:
+            if task.get("userId") == emp_id:
                 employees_progress[str(emp_id)].append({
                     "username": username,
                     "task": task.get("title"),
